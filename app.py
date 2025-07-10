@@ -1,6 +1,7 @@
 
 import streamlit as st
 import openai
+from openai import OpenAI
 
 st.set_page_config(page_title="AA Assistant Chatbot", layout="wide")
 
@@ -28,13 +29,14 @@ Adewale Adenuga is a certified Project Manager (PMP®) and skilled Data Analyst/
 """
 
 # --- Input ---
+client = OpenAI(api_key=api_key)
 if api_key:
     openai.api_key = api_key
     user_input = st.text_input("Ask me anything about Adewale...", key="user_input")
 
     if user_input:
         with st.spinner("Thinking..."):
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-4",
                 messages=[
                     {"role": "system", "content": context},
