@@ -36,16 +36,20 @@ if api_key:
 
     if user_input:
         with st.spinner("Thinking..."):
-            response = client.chat.completions.create(
-                model="gpt-4",
-                messages=[
-                    {"role": "system", "content": context},
-                    {"role": "user", "content": user_input}
-                ],
-                max_tokens=500,
-                temperature=0.7
-            )
-            answer = response.choices[0].message["content"]
-            st.success(answer)
+            try:
+                response = client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": context},
+                        {"role": "user", "content": user_input}
+                    ],
+                    max_tokens=500,
+                    temperature=0.7
+                )
+                answer = response.choices[0].message.content
+                st.success(answer)
+            
+            except Exception as e:
+                st.error(f"Something went wrong: {e}")
 else:
     st.warning("Please enter your OpenAI API key in the sidebar to start chatting.")
